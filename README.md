@@ -15,5 +15,5 @@ Option 1 for all users:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;edit the /etc/secpac.conf<br/>
 
 Option 2 for sepecific users:<br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;copy /etc/secpac.conf to ~/.conf/secpac.conf<br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;then edit ~/.conf/secpac.conf<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;copy /etc/secpac.conf to ~/.config/secpac.conf<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;then edit ~/.config/secpac.conf<br/>
