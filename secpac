@@ -47,7 +47,7 @@ class main:
         
         # determine valid conf file
         try: 
-            confFile = open(os.environ.get("HOME") + "/.conf/secpac.conf", 'r');
+            confFile = open(os.environ.get("HOME") + "/.config/secpac.conf", 'r');
 
         except FileNotFoundError:
 
@@ -91,6 +91,9 @@ class main:
 
                 # print out all valid packages
                 print(i, end=" ");
+
+        # make sure that output doesn't show up before $PS1
+        print()
 
 
     def check(self, package):
