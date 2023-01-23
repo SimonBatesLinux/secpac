@@ -1,1 +1,109 @@
+#!/bin/python3
 
+#    Secpac  Copyright (C) 2022 Simon Bates
+
+#    This file is part of Secpac.
+#    Secpac is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    Secpac is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Secpac.  If not, see <https://www.gnu.org/licenses/>.
+
+import sys
+import re
+import os
+
+global VERSION
+VERSION = "1.0.0"
+
+class main:
+
+    PACKAGES = []; # [string,...] // list of all approved packages
+
+    def __init__(self, argv):
+        """ script init """
+        if len(argv) == 1:
+
+            # output help file
+            self.help();
+
+        else:
+
+            # main function
+            self.recall_packages();
+            self.mainloop(argv);
+
+    def help(self):
+        """ display help """
+
+        os.system("man secpac")
+
+    def recall_packages(self):
+        """ recall and parse packages.conf """
+        
+        # determine valid conf file
+        try: 
+            confFile = open(os.environ.get("HOME") + "/.config/secpac.conf", 'r');
+
+        except FileNotFoundError:
+
+            try:
+                confFile = open("/etc/secpac.conf", 'r');
+
+            except FileNotFoundError:
+
+                os.system("echo \"Secpac - Error: no config file located.\" 1>&2");
+                exit()
+
+        # grab file content
+        file_parse = confFile.read().split("\n");
+        confFile.close();
+
+        # parse conf file content
+        self.PACKAGES = [];
+        for i in file_parse:
+
+            com_split = i.split("#"); # split so we can easily read commands before #
+
+            # make sure left side is not neither empty or filled with tabs and spaces
+            if "\t".join("".join(com_split[0].split(" ")).split("\t")) != "":
+
+                cur = " " + com_split[0] + " ";
+                cur = re.sub('\t', ' ', cur);
+                cur = re.sub(' +', ' ', cur);
+                cur = cur[1:-1];
+
+                self.PACKAGES.append(cur);
+
+
+    def mainloop(self, argv):
+        """ main loop of script """
+
+        # for each packages
+        for i in argv:
+            
+            # check to make sure it's in the secpac.conf
+            if self.check(i):
+
+                # print out all valid packages
+                print(i, end=" ");
+
+        # make sure that output doesn't show up before $PS1
+        print()
+
+
+    def check(self, package):
+        """ confirm package validity """
+
+        return (package in self.PACKAGES);
+
+# ensure that we are not imported
+if __name__ == "__main__":
+    main(sys.argv);
