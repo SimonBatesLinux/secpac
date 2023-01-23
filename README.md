@@ -1,8 +1,11 @@
-# secpac
+﻿# secpac
 Package whitelisting application
 
+# dependencies
+python3.*
+
 # install
-run install.sh as root
+run “sudo make install”
 
 # usage
 type "secpac [packages]" and secpac will return only the packages listed under the whitelist
